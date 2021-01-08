@@ -13,18 +13,43 @@ namespace Servicios.api.Libreria.Controllers
 	[ApiController]
 	public class LibreriaServicioController : ControllerBase
 	{
-		private readonly IAutorRepository _autorRepository;
+		private readonly IAutorRepository _AutorRepository;
 
-		public LibreriaServicioController(IAutorRepository autorRepository) {
-			_autorRepository = autorRepository;
+		private readonly IMongoRepository<AutorEntity> _AutorGenericoRepository;
+
+		private readonly IMongoRepository<EmpleadoEntity> _EmpleadoGenericoRepository;
+
+		public LibreriaServicioController(IAutorRepository AutorRepository, IMongoRepository<AutorEntity> AutorGenericoRepository, IMongoRepository<EmpleadoEntity> EmpleadoGenericoRepository) {
+			_AutorRepository = AutorRepository;
+			_AutorGenericoRepository = AutorGenericoRepository;
+			_EmpleadoGenericoRepository = EmpleadoGenericoRepository;
+		}
+
+		[HttpGet("autorGenerico")]
+		public async Task<ActionResult<IEnumerable<AutorEntity>>> GetAutorGenerico() {
+
+			var autores = await _AutorGenericoRepository.GetAll();
+			return Ok(autores);
+
 		}
 
 		[HttpGet("autores")]
-		public async Task<ActionResult<IEnumerable<Autor>>> GetAutores() {
+		public async Task<ActionResult<IEnumerable<Autor>>> GetAutores()
+		{
 
-			var autores = await _autorRepository.GetAutores();
+			var autores = await _AutorRepository.GetAutores();
 			return Ok(autores);
-		
+
+		}
+
+
+		[HttpGet("empleadoGenerico")]
+		public async Task<ActionResult<IEnumerable<EmpleadoEntity>>> GetEmpleadoGenerico()
+		{
+
+			var empleados = await _EmpleadoGenericoRepository.GetAll();
+			return Ok(empleados);
+
 		}
 	}
 }

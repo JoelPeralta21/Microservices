@@ -44,6 +44,8 @@ namespace Servicios.api.Libreria
 
 			services.AddTransient<IAutorRepository, AutorRepository>();
 
+			services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));// addscoped trabaja cada vez que un cliente haga un request a un controller 
+
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
